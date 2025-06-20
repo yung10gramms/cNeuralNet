@@ -203,6 +203,7 @@ void forward(module* nn) {
 }
 
 void calc_loss(module* nn) {
+    assert(nn); assert(nn->loss_f); 
     nn->curr_loss=nn->loss_f->cost(nn->output, nn->yhat);
 }
 
@@ -224,16 +225,21 @@ void zero_grad(module* nn) {
     }
 }
 
-
+/**
+ * 
+ * Function that backpropagates to compute the gradients.
+*/
 void backward(module* nn) {
-    // lList* gmap = ()
     assert(nn);
+    assert(nn->layers);
     int num_layers = numLayers(nn);
     if(num_layers <= 1) {
         printf("Module too small. Increase number of layers.\n"); return;
     }
     
+    /* propagated gradients */
     Matrix* g_map[num_layers];
+    /* basically Wx+b */
     Matrix* z_map[num_layers-1];
 
     /* calculate loss if not already calculated */
@@ -253,7 +259,6 @@ void backward(module* nn) {
     
 
     printf("\nNumber of layers %d\n", numLayers(nn));
-    // TODO
     for(int i = num_layers-2; i >= 0; i --) {
 
         assert(cur_layer);
@@ -326,25 +331,6 @@ void backward(module* nn) {
         } 
         // free(a);
     }
-
-    // lNode* it = getTail(nn->layers);
-    // printf("\n[BACKPROP]grads updated\n");
-    // for(int j=0;j<nn->layers->size;j++) {
-    //     layer* c = (layer*)it->data;
-    //     if(!c->gradW) {
-    //         printf("And layer %d has null grads.\n", (nn->layers->size-j));
-    //         // return;
-    //         continue;
-    //     }
-    //     it=it->prev;
-    //     printf("Layer %d norm grad %f\n", (nn->layers->size-j), norm(c->gradW,2));
-    // }
-
-    // for (int i=0;i<nn->layers->size;i++){
-    //     printMatrix(g_map[i]);
-    //     // g_map
-    // }
-
 }
 
 #endif
