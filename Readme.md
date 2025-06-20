@@ -1,4 +1,4 @@
-# neuralNetworkC
+# cNeuralNet
 A library for constructing neural networks, written in pure C!
 
 ## Get started
