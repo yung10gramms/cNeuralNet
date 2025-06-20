@@ -225,41 +225,6 @@ void zero_grad(module* nn) {
 }
 
 
-// void backward(module* nn) {
-//     assert(nn);
-//     assert(nn->layers);
-//     int num_layers=nn->layers->size;
-//     assert(num_layers>1);
-
-//     ArrayList* g_map = createWithSize(num_layers);
-//     ArrayList* z_map = createWithSize(num_layers-1);
-    
-//     calc_loss(nn);
-
-//     aNode* node = createNode(1);
-//     node->data=nn->loss_f->gradient(nn->output,nn->yhat);
-//     setAtIndex(g_map, num_layers-1, node);
-
-//     // buffer them here
-//     ArrayList* weights = createWithSize(num_layers-1);
-//     ArrayList* biases = createWithSize(num_layers-1);
-//     ArrayList* states = createWithSize(num_layers-1);
-
-//     // nn->layers->head->next;
-//     for(int i=0;i<num_layers;i++) {
-//         weights->elems[i].data=
-//     }
-
-//     for(int i = num_layers-2; i>=0; i--) {
-//         // z_map[i] = self.weights[i] @ self.states[i] + self.biases[i]
-//         assert(z_map->elems[i]);
-
-//         z_map->elems[i].data =  addMat(matrixMul2(right_layer->weights, cur_layer->state), right_layer->biases);
-        
-
-//     }
-// }
-
 void backward(module* nn) {
     // lList* gmap = ()
     assert(nn);
@@ -298,17 +263,18 @@ void backward(module* nn) {
         Matrix* sigma_prime_z = cur_layer->activation->jacobian(z_map[i]);
         
         assert(g_map[i+1]->rows==sigma_prime_z->rows && g_map[i+1]->cols==1);
-        // Matrix* a = matrixMul2(sigma_prime_z, g_map[i+1]);
+        /*
+        since the gradient of the activation is a valid Jacobian
+        the point-wise equivalent of Haadamard product is now dot
+        product of the diagonal (in case of element-wise) matrix 
+        grad[sigma] times g_map[i+1], which is essentially the propagated 
+        gradient.  
+        */
         Matrix* a = matrixMul2(sigma_prime_z, g_map[i+1]);
-        
-        // if(i==num_layers-2) {
-        //     assert(norm(linearCombination(g_map[i+1], mat_last, 1, -1), 2)<0.001);
-        // }
-
+        /* free the dummy variable */
         free(sigma_prime_z);
 
         Matrix* stateT =  transpose(cur_layer->state);
-
 
         if(right_layer->gradW) free(right_layer->gradW);
         printf("a * x.T ");
@@ -316,7 +282,6 @@ void backward(module* nn) {
         printShape(stateT);
         right_layer->gradW = matrixMul2(a, stateT);
 
-        // assert(right_layer->gradW->cols==right_layer->weights->cols && right_layer->gradW->rows==right_layer->weights->rows);
 
         printf("\n[BACKPROP] norm of gradient %f\n", norm(right_layer->gradW,2));
         // printShape(right_layer->gradW);
@@ -346,21 +311,8 @@ void backward(module* nn) {
             Matrix* w_T = transpose(right_layer->weights);
             g_map[i] = matrixMul2(w_T, a);
             free(w_T);
-            // printMatrix(g_map[i]);
-            // printf("------\n");
         }
-        // if(cur_layer->weights && a){
-        //     assert(cur_layer->weights);
-        //     assert(a);
-        //     printf("[BACKPROP] we got here, index=%d\n", i);
-        //     g_map[i] = matrixMul2(cur_layer->weights, a);
-        //     printMatrix(g_map[i]);
-        //     printf("------\n");
-        // } else {
-        //     assert(iterator->prev->id==START_NODE_ID);
-        // }
-        // return;
-       
+        
         
         if(iterator->prev && iterator->prev->id!=START_NODE_ID) {
             
