@@ -4,7 +4,16 @@
 #include <assert.h>
 #include<stdlib.h>
 #include<stdio.h>
+
+/**
+ * General implementation of an arraylist, having a set increasing 
+ * factor each time the buffer gets full. As of now, does not
+ * support deletions.
+*/
+
+/* factor to increase array by each time it gets filled. */
 const double incr_factor = 0.5;
+/* initial buffer size. */
 const int init_size = 10;
 
 typedef struct arrayList
@@ -42,8 +51,6 @@ ArrayList* createWithSize(int N) {
 void append(ArrayList* arr, aNode* node) { 
     assert(arr); assert(node);
     if(arr->index >= arr->bufferLen) {
-        // aNode* buffer = (aNode*)malloc(arr->bufferLen*sizeof(aNode));
-        // for(int i=0; i<arr->index; i++) buffer[i]=arr->elems[i];
         aNode* buffer = arr->elems;
         arr->bufferLen = (int) ((1+incr_factor)*arr->bufferLen);
         aNode* temp = (aNode*)malloc(arr->bufferLen*sizeof(aNode));
@@ -69,7 +76,6 @@ void setAtIndex(ArrayList* arr, int index, aNode* node) {
 }
 
 void printArrayList(ArrayList* arr) {
-    
     printf("[");
     for(int i=0;i<arr->index;i++) {
         printf("%d", getAtIndex(arr, i).id); if(i<arr->index-1) printf(", ");
@@ -77,6 +83,9 @@ void printArrayList(ArrayList* arr) {
     printf("]\n");
 }
 
+/**
+ * Dynamically allocate a new node.
+*/
 aNode* createNode(int id) {
     aNode* node = (aNode*)malloc(sizeof(aNode));
     node->id=id;
@@ -85,10 +94,6 @@ aNode* createNode(int id) {
 }
 
 void freeList(ArrayList *arr) {
-    // for(int i=0; i<arr->index; i++) {
-    //     free(&getAtIndex(arr, i));
-        
-    // }
     free(arr->elems);
 }
 
