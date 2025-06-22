@@ -8,6 +8,7 @@
 #include<assert.h>
 #include <time.h>
 
+
 void main() {
     srand((unsigned int)time(NULL));
     /* Set an activation function */

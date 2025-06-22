@@ -73,13 +73,13 @@ void freeModule(module* nn) {
 
 void append_layer(module* nn, int n, act_fun* activation) 
 {   
-    printf("Checking if nn is null\n");
+    // printf("Checking if nn is null\n");
     assert(nn);
 
-    printf("Checking if nn layers is null\n");
+    // printf("Checking if nn layers is null\n");
     assert(nn->layers);
 
-    printf("Checking if activation is null\n");
+    // printf("Checking if activation is null\n");
     assert(activation);
 
     /* Create layer */
@@ -103,7 +103,7 @@ void append_layer(module* nn, int n, act_fun* activation)
     
     if (numLayers(nn)==0) {
         addNode(nn->layers, layerNode);
-        printf("\nThis was the first layer!\n");
+        // printf("\nThis was the first layer!\n");
         return;
     } 
 
@@ -112,7 +112,7 @@ void append_layer(module* nn, int n, act_fun* activation)
     layer *last_layer = (layer*) tail->data;
 
     int w_dim1 = n, w_dim2 = last_layer->size;
-    printf("%d", w_dim2); 
+    // printf("%d", w_dim2); 
     addNode(nn->layers, layerNode);
     
     Matrix *weights;
@@ -258,7 +258,7 @@ void backward(module* nn) {
     layer* cur_layer = (layer*)iterator->data;
     
 
-    printf("\nNumber of layers %d\n", numLayers(nn));
+    // printf("\nNumber of layers %d\n", numLayers(nn));
     for(int i = num_layers-2; i >= 0; i --) {
 
         assert(cur_layer);
@@ -282,13 +282,13 @@ void backward(module* nn) {
         Matrix* stateT =  transpose(cur_layer->state);
 
         if(right_layer->gradW) free(right_layer->gradW);
-        printf("a * x.T ");
-        printShape(a);
-        printShape(stateT);
+        // printf("a * x.T ");
+        // printShape(a);
+        // printShape(stateT);
         right_layer->gradW = matrixMul2(a, stateT);
 
 
-        printf("\n[BACKPROP] norm of gradient %f\n", norm(right_layer->gradW,2));
+        // printf("\n[BACKPROP] norm of gradient %f\n", norm(right_layer->gradW,2));
         // printShape(right_layer->gradW);
         // printShape(right_layer->weights);
         Matrix* gradW_right = right_layer->gradW, *w_right = right_layer->weights;
@@ -304,15 +304,15 @@ void backward(module* nn) {
         
         right_layer->gradb = a;
 
-        if(!cur_layer->weights) {
-            printf("NO CURRENT LAYER weights");
-        }
+        // if(!cur_layer->weights) {
+        //     // printf("NO CURRENT LAYER weights");
+        // }
         
         assert(right_layer->weights && a);
         if(right_layer->weights && a){
             assert(right_layer->weights);
             assert(a);
-            printf("[BACKPROP] we got here, index=%d\n", i);
+            // printf("[BACKPROP] we got here, index=%d\n", i);
             Matrix* w_T = transpose(right_layer->weights);
             g_map[i] = matrixMul2(w_T, a);
             free(w_T);

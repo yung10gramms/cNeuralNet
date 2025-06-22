@@ -54,10 +54,10 @@ void dynamic_sgd(module* nn, Optimizer* opt){
         
         /***** weights ********/
         gradW = (Matrix*) cur_layer->gradW;
-        printf("\n[OPTIMIZER] NORM of gradient %f\n",norm(cur_layer->gradW,2));
+        // printf("\n[OPTIMIZER] NORM of gradient %f\n",norm(cur_layer->gradW,2));
         if(norm(gradW,2)>0 && opt->step_rule == DYNAMIC_STEP)
             opt->lr = (double) 1/(opt->k * norm(gradW, 2));
-        printf("[OPTIMIZER]lr=%f\n", opt->lr);
+        // printf("[OPTIMIZER]lr=%f\n", opt->lr);
         weights_tmp = cur_layer->weights;
         cur_layer->weights = linearCombination(weights_tmp, gradW, (double) 1, (double) -opt->lr);
         cur_layer->weights = linearCombination(cur_layer->weights, zeros_like(cur_layer->weights), (double)1/norm(cur_layer->weights, 2), 0);

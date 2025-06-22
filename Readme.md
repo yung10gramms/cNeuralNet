@@ -73,3 +73,14 @@ for(int i = 0; i < 100; i ++) {
     free(y);
 }
 ```
+
+## Speed 🚄 
+This library can achieve significant training speeds, achieving
+```
+time elapsed to train an ANN with
+	Number of layers: 100
+	Dimension of hidden layers: 100
+	Num iterations (epochs of batch size 1): 200
+
+68 seconds
+```

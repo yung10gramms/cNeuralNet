@@ -2,7 +2,9 @@
 #define ACTIVATIONS_H
 
 #include"matrix.h"
+#include"module.h"
 #include<assert.h>
+
 Matrix* linear(Matrix* x) {
     assert(x->rows==1||x->cols==1);
     Matrix* y = zeros_like(x);
@@ -14,6 +16,26 @@ Matrix* linear(Matrix* x) {
 Matrix* linearJacobian(Matrix* x) {
     assert(x->rows==1||x->cols==1);
     return identity(x->cols*x->rows);
+}
+
+/**
+ * 
+ * dynamically allocate a new activation function.
+*/
+act_fun* activation() {
+    act_fun* new_act = (act_fun*)malloc(sizeof(act_fun));
+    return new_act;
+}
+
+/**
+ * 
+ * dynamically allocate a linear activation function.
+*/
+act_fun* getLinearActivation() {
+    act_fun* new_act=activation();
+    new_act->activate=linear;
+    new_act->jacobian=linearJacobian;
+    return new_act;
 }
 
 Matrix* ReLU(Matrix*x) {
@@ -36,6 +58,17 @@ Matrix* reluJacobian(Matrix*x) {
         } 
     }
     return output;
+}
+
+/**
+ * 
+ * dynamically allocate a ReLU activation function.
+*/
+act_fun* getReLU() {
+    act_fun* new_act = activation();
+    new_act->activate=ReLU;
+    new_act->jacobian=reluJacobian;
+    return new_act;
 }
 
 #endif
