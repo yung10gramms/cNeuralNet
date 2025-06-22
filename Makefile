@@ -14,3 +14,7 @@ test_module:
 	clear
 	gcc -Iheaders -o tesmodule src/test_module.c -lm
 	./tesmodule
+test_largedata:
+	clear
+	gcc -Iheaders -o testlargedata src/test_large_nn.c -lm
+	./testlargedata
