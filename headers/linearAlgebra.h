@@ -4,6 +4,10 @@
 #include<stdio.h>
 #include <math.h>
 
+/**
+ * 
+ * Get the element wise product of two matrices.
+*/
 Matrix* hadamard(Matrix* a, Matrix* b) {
     assert(a);
     assert(b);
@@ -16,13 +20,16 @@ Matrix* hadamard(Matrix* a, Matrix* b) {
     return out;
 }
 
+/**
+ * 
+ * Get the dot product of two matrices
+*/
 Matrix* matrixMul2(Matrix* a, Matrix* b) {
     assert(a);
     assert(b);
     Matrix* y = createMatrix(a->rows, b->cols);
 
     assert(b->rows==a->cols);
-    // assert(a->rows==b->cols);
     int n = a->rows, m=a->cols, k=b->cols;
     for (int i = 0; i < n; i ++) {
         for(int j = 0; j < k; j ++) {
@@ -37,6 +44,10 @@ Matrix* matrixMul2(Matrix* a, Matrix* b) {
     return y;
 }
 
+/**
+ * 
+ * Get the transpose of a matrix
+*/
 Matrix* transpose(Matrix* m) {
     assert(m);
     Matrix* out = createMatrix(m->cols, m->rows);
@@ -49,6 +60,9 @@ Matrix* transpose(Matrix* m) {
     return out;
 }
 
+/**
+ * Get the sum of two matrices.
+*/
 Matrix* addMat(Matrix *a, Matrix *b)
 {
     Matrix* out = createMatrix(a->rows, a->cols);
@@ -73,6 +87,10 @@ Matrix* linearCombination(Matrix *a, Matrix *b, double c1, double c2)
     return out;
 } 
 
+/**
+ * 
+ * Print the elements of a matrix.
+*/
 void printMatrix(Matrix* x) {
     printf("[");
     
@@ -91,6 +109,10 @@ void printMatrix(Matrix* x) {
     
 }
 
+/**
+ * 
+ * Print the dimenions of a matrix.
+*/
 void printShape(Matrix* x) {
     printf("(%d, %d)", x->rows, x->cols);
 }
