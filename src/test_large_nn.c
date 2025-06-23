@@ -96,6 +96,10 @@ void main() {
         free(x);
         free(y);
     }
+
+
+
+    
     time_end=time(NULL);
     printf("\n\nloss=[");
     for(int i=0;i<losses->index;i++){
