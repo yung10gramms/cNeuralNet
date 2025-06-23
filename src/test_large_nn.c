@@ -73,18 +73,20 @@ void main() {
     ArrayList* losses = createWithSize(num_iterations);
     time_t time_start = time(NULL), time_end;
     for(int i = 0; i < num_iterations; i ++) {
+        /* Generate random data and labels */
         x = gaussianMatrix(input_dimension, 1);
         y = y_x(x, A, b);
+        /* Flush gradients to be safe */
         zero_grad(&neuralNet);
-        
+        /* Insert and forward input */
         insert(&neuralNet, x, y);  
         forward(&neuralNet);  
-        
+        /* Calculate loss */
         calc_loss(&neuralNet);
-        // printf("\nloss: %f\n", neuralNet.curr_loss);
-
+        /* Backpropagate */
         backward(&neuralNet);
         dynamic_sgd(&neuralNet, opt);
+
 
         aNode* n = createNode(i);
         double* loss_curr = (double*)malloc(sizeof(double));
