@@ -17,14 +17,7 @@ double l2lossSquared(Matrix* x, Matrix* yhat) {
     assert(yhat->cols==1||yhat->rows==1);
     assert(x->rows*x->cols==yhat->rows*yhat->cols);
 
-    // double out = 0;
-    // for (int i = 0; i<x->rows*x->cols; i++) {
-    //     double tmp=(x->data[i]-yhat->data[i]);
-    //     out+=tmp*tmp;
-    // }
-
     return pow(norm(linearCombination(x, yhat, (double)1, (double)-1), 2),2);
-    // return out;
 }
 
 /**
