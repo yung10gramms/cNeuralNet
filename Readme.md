@@ -22,7 +22,11 @@ linear_activation.jacobian=reluJacobian;
 or even declare your own one. The convention made in this work is that all vectors and matrices are treated as matrices, similarly to matlab, and all activation functions are essentially vector fields, meaning functions $\mathbb{R}^N\rightarrow \mathbb{R}^N$, meaning their gradients are $\mathbb{R}^N\rightarrow \mathbb{R}^{N\times N}$. This unified approach allows for non element-wise activations such as `sigmoid`, etc.
 
 #### 2️⃣ A loss function
-As of now, the only loss function implemented is the $l_2$ squared one, being equal to $\mathcal{L}(y;\hat{y})=\Vert y-\hat{y}\Vert^2$ with a gradient of $\mathcal{L}(y;\hat{y})=2 ( y-\hat{y})$.
+As of now, the only loss function implemented is the $l_2$ squared one, being equal to 
+$$\mathcal{L}(y;\hat{y})=\Vert y-\hat{y}\Vert^2$$ 
+with a gradient of 
+$$\nabla\mathcal{L}(y;\hat{y})=2(y-\hat{y})$$ 
+for all $\hat{y},y\in \mathbb{R}^{N}.$
 ```c
 cost_func loss_f;
 /* use the implemented l2 squared loss function */
